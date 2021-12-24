@@ -36,7 +36,7 @@ import random
 def inv(x):
     """Compute 1/x in GF(2^FIELD_BITS)"""
     t = x
-    for i in range(FIELD_BITS - 2):
+    for _ in range(FIELD_BITS - 2):
         t = mul(mul(t, t), x)
     return mul(t, t)
 
@@ -61,7 +61,7 @@ def berlekamp_massey(s):
                 L, B, b, m = n + 1 - L, T, d, 1
             else:
                 m += 1
-    return C[0:L + 1]
+    return C[:L + 1]
 
 def poly_monic(p):
     """Return the monic multiple of p, or 0 if the input is 0."""
@@ -103,7 +103,7 @@ def poly_sqr(p):
 def poly_trace(m, a):
     """Compute the coefficients of the trace polynomial of (a*x) mod m."""
     out = [0, a]
-    for i in range(FIELD_BITS - 1):
+    for _ in range(FIELD_BITS - 1):
         out = poly_sqr(out)
         while len(out) < 2:
             out += [0]

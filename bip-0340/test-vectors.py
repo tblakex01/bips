@@ -34,7 +34,7 @@ def vector0():
     # we should have at least one test vector where the the point reconstructed
     # from the R.x coordinate has a square and one where it has a non-square Y
     # coordinate. In this one Y is non-square.
-    R = lift_x(sig[0:32])
+    R = lift_x(sig[:32])
     assert(not has_square_y(R))
 
     return (seckey, pubkey, aux_rand, msg, sig, "TRUE", None)
@@ -47,7 +47,7 @@ def vector1():
     sig = schnorr_sign(msg, seckey, aux_rand)
 
     # The point reconstructed from the R.x coordinate has a square Y coordinate.
-    R = lift_x(sig[0:32])
+    R = lift_x(sig[:32])
     assert(has_square_y(R))
 
     return (seckey, pubkey_gen(seckey), aux_rand, msg, sig, "TRUE", None)
@@ -65,7 +65,7 @@ def vector2():
 
     # This signature vector would not verify if the implementer checked the
     # evenness of the X coordinate of R instead of the Y coordinate.
-    R = lift_x(sig[0:32])
+    R = lift_x(sig[:32])
     assert(R[0] % 2 == 1)
 
     return (seckey, pubkey, aux_rand, msg, sig, "TRUE", None)
@@ -147,11 +147,11 @@ def vector8():
     seckey = default_seckey
     msg = default_msg
     sig = schnorr_sign(msg, seckey, default_aux_rand)
-    sig = sig[0:32] + bytes_from_int(n - int_from_bytes(sig[32:64]))
+    sig = sig[:32] + bytes_from_int(n - int_from_bytes(sig[32:64]))
     return (None, pubkey_gen(seckey), None, msg, sig, "FALSE", "negated s value")
 
 def bytes_from_point_inf0(P):
-    if P == None:
+    if P is None:
         return bytes_from_int(0)
     return bytes_from_int(P[0])
 
@@ -170,7 +170,7 @@ def vector9():
     return (None, pubkey_gen(seckey), None, msg, sig, "FALSE", "sG - eP is infinite. Test fails in single verification if has_even_y(inf) is defined as true and x(inf) as 0")
 
 def bytes_from_point_inf1(P):
-    if P == None:
+    if P is None:
         return bytes_from_int(1)
     return bytes_from_int(P[0])
 
@@ -225,7 +225,7 @@ def vector13():
     sig = schnorr_sign(msg, seckey, default_aux_rand)
 
     # Replace s with a number that's equal to the curve order
-    sig = sig[0:32] + bytes_from_int(n)
+    sig = sig[:32] + bytes_from_int(n)
 
     return (None, pubkey_gen(seckey), None, msg, sig, "FALSE", "sig[32:64] is equal to curve order")
 

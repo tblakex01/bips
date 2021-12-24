@@ -8,7 +8,7 @@ def bytearr_cmp(barr1, barr2):
 			return -1;
 		elif (barr1[pos] > barr2[pos]):
 			return 1;
-		pos = pos + 1
+		pos += 1
 	#the shorter array will be ordered first
 	if (len(barr1) < len(barr2)):
 		return -1
@@ -35,11 +35,9 @@ def sort_inputs(input_tuples):
 	return sorted(input_tuples, cmp=input_cmp)
 
 def print_inputs(ordered_input_tuples):
-	index = 0
-	for prev_tx_hash_byte_arr_little_endian, prev_tx_output_index in ordered_input_tuples:
+	for index, (prev_tx_hash_byte_arr_little_endian, prev_tx_output_index) in enumerate(ordered_input_tuples):
 		prev_tx_hash_hex = binascii.hexlify(bytearray(prev_tx_hash_byte_arr_little_endian))
 		print("%d: %s[%d]" % (index, prev_tx_hash_hex, prev_tx_output_index))
-		index = index + 1
 
 #tuples: (amount, scriptPubKey_byte_arr)
 def output_cmp(output_tuple1, output_tuple2):
@@ -55,11 +53,9 @@ def sort_outputs(output_tuples):
 	return sorted(output_tuples, cmp=output_cmp)
 
 def print_outputs(ordered_output_tuples):
-	index = 0
-	for amount, scriptPubKey_byte_arr in ordered_output_tuples:
+	for index, (amount, scriptPubKey_byte_arr) in enumerate(ordered_output_tuples):
 		scriptPubKey_hex = binascii.hexlify(bytearray(scriptPubKey_byte_arr))
 		print("%d:\t%d\t%s" % (index, amount, scriptPubKey_hex))
-		index = index + 1
 
 def main():
 	#reference data: https://blockchain.info/rawtx/0a6a357e2f7796444e02638749d9611c008b253fb55f5dc88b739b230ed0c4c3

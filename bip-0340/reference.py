@@ -134,7 +134,13 @@ def schnorr_verify(msg: bytes, pubkey: bytes, sig: bytes) -> bool:
     if (P is None) or (r >= p) or (s >= n):
         debug_print_vars()
         return False
-    e = int_from_bytes(tagged_hash("BIP0340/challenge", sig[0:32] + pubkey + msg)) % n
+    e = (
+        int_from_bytes(
+            tagged_hash("BIP0340/challenge", sig[:32] + pubkey + msg)
+        )
+        % n
+    )
+
     R = point_add(point_mul(G, s), point_mul(P, n - e))
     if (R is None) or (not has_even_y(R)) or (x(R) != r):
         debug_print_vars()

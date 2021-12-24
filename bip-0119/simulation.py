@@ -37,12 +37,9 @@ def normal():
             # I.E., \sum_1_n Pois(a) = Pois(a*n)
             txns = np.random.poisson(get_rate(phase)* block_time)
             weight = txns*AVG_TX + backlog
-            if weight > MAX_BLOCK_SIZE:
-                backlog = weight - MAX_BLOCK_SIZE
-            else:
-                backlog = 0
+            backlog = weight - MAX_BLOCK_SIZE if weight > MAX_BLOCK_SIZE else 0
             results_unconfirmed[i] = backlog/AVG_TX
-    return results_unconfirmed, np.cumsum(total_time)/(60*60*24.0)
+    return results_unconfirmed, np.cumsum(total_time) / (60**2 * 24.0)
 def compressed(rate_multiplier = 1):
     np.random.seed(0)
     print("Max Txns Per Sec %f"%TXNS_PER_SEC)
